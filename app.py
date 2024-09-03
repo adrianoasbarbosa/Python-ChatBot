@@ -1,24 +1,50 @@
 import sys
 import time
+from datetime import datetime
 
 # Exibir a versão do Python
 print(sys.version)
 
-def saudacao():
-    print("\n" * 2)  # Adiciona duas linhas em branco antes da saudação
-    print("Olá! Bem-vindo à Mecânica GT. Como posso ajudá-lo hoje?")
-    print("1. Agendar um serviço")
-    print("2. Informações sobre os serviços")
-    print("3. Falar com um atendente")
-    print("4. Sair")
-    print("\n" * 2)  # Adiciona duas linhas em branco após o menu
+
+class MecanicaChatbot:
+    def saudacao():
+        print("\n" * 2)  # Adiciona duas linhas em branco antes da saudação
+        print("Olá! Bem-vindo à Mecânica GT. Como posso ajudá-lo hoje?")
+        print("1. Agendar um serviço")
+        print("2. Informações sobre os serviços")
+        print("3. Falar com um atendente")
+        print("4. Sair")
+        print("\n" * 2)  # Adiciona duas linhas em branco após o menu
+
 
 def agendar_servico():
     nome = input("Por favor, insira seu nome: ")
     contato = input("Por favor, insira seu telefone para contato: ")
-    data = input("Qual a data desejada para o serviço? (DD/MM/AAAA): ")
-    print(f"Obrigado, {nome}! Seu agendamento para {data} foi registrado. Entraremos em contato pelo número {contato} para confirmar.")
+    
+    # Solicitar informações do carro
+    marca = input("Por favor, insira a marca do seu carro: ")
+    modelo = input("Por favor, insira o modelo do seu carro: ")
+    ano = input("Por favor, insira o ano do seu carro: ")
+    placa = input("Por favor, insira a placa do seu carro: ")
+    
+    while True:
+        data = input("Qual a data desejada para o serviço? (DD/MM/AAAA): ")
+        try:
+            data_agendamento = datetime.strptime(data, "%d/%m/%Y")
+            data_atual = datetime.now()
+
+            if data_agendamento < data_atual:
+                print("A data inserida é anterior à data atual. Por favor, insira uma data válida.")
+            else:
+                break  # A data é válida, sair do loop
+        except ValueError:
+            print("Formato de data inválido. Por favor, insira a data no formato DD/MM/AAAA.")
+    
+    print(f"Obrigado, {nome}! Seu agendamento para {data} foi registrado.")
+    print(f"Detalhes do veículo: {marca} {modelo}, Ano {ano}, Placa {placa}.")
+    print(f"Entraremos em contato pelo número {contato} para confirmar.")
     time.sleep(5)  # Delay de 5 segundos antes de voltar ao menu principal
+
 
 def info_servicos():
     print("\n" * 2)  # Adiciona duas linhas em branco antes da lista de serviços
@@ -31,9 +57,11 @@ def info_servicos():
     print("\n" * 2)  # Adiciona duas linhas em branco após a lista
     time.sleep(5)  # Delay de 5 segundos antes de voltar ao menu principal
 
+
 def main():
+    chatbot = MecanicaChatbot()  # Criando uma instância da classe
     while True:
-        saudacao()
+        chatbot.saudacao()  # Chamando o método saudacao da instância
         opcao = input("Escolha uma opção (1-4): ")
         
         if opcao == "1":
@@ -49,6 +77,7 @@ def main():
         else:
             print("\nOpção inválida. Por favor, tente novamente.\n")
             time.sleep(2)  # Delay de 2 segundos antes de pedir novamente
+
 
 if __name__ == "__main__":
     main()
